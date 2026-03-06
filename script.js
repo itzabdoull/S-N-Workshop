@@ -46,89 +46,159 @@ const faqs = [
   },
 ];
 
-const renderCards = (items, containerId, template) => {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = items.map(template).join("");
+const MINUS = "\u2212";
+
+const createElement = (tagName, className, text) => {
+  const element = document.createElement(tagName);
+  if (className) element.className = className;
+  if (typeof text === "string") element.textContent = text;
+  return element;
 };
 
-renderCards(
-  programs,
-  "program-grid",
-  ({ title, text, meta }) => `
-    <article class="program-card">
-      <span class="meta">${meta}</span>
-      <h3>${title}</h3>
-      <p>${text}</p>
-    </article>
-  `
-);
+const renderPrograms = () => {
+  const container = document.getElementById("program-grid");
+  if (!container) return;
 
-renderCards(
-  steps,
-  "steps-grid",
-  ({ title, text }, index) => `
-    <article class="step-card">
-      <span class="step-index">0${index + 1}</span>
-      <h3>${title}</h3>
-      <p>${text}</p>
-    </article>
-  `
-);
+  const fragment = document.createDocumentFragment();
 
-renderCards(
-  faqs,
-  "faq-list",
-  ({ question, answer }, index) => `
-    <article class="accordion-item ${index === 0 ? "open" : ""}">
-      <button type="button" aria-expanded="${index === 0 ? "true" : "false"}">
-        <span>${question}</span>
-        <span>${index === 0 ? "−" : "+"}</span>
-      </button>
-      <div class="answer">
-        <p>${answer}</p>
-      </div>
-    </article>
-  `
-);
+  programs.forEach(({ title, text, meta }) => {
+    const card = createElement("article", "program-card");
+    const badge = createElement("span", "meta", meta);
+    const heading = createElement("h3", "", title);
+    const copy = createElement("p", "", text);
 
-document.querySelectorAll(".accordion-item button").forEach((button) => {
-  button.addEventListener("click", () => {
-    const item = button.closest(".accordion-item");
-    const isOpen = item.classList.contains("open");
-
-    document.querySelectorAll(".accordion-item").forEach((entry) => {
-      entry.classList.remove("open");
-      const trigger = entry.querySelector("button");
-      trigger.setAttribute("aria-expanded", "false");
-      trigger.lastElementChild.textContent = "+";
-    });
-
-    if (!isOpen) {
-      item.classList.add("open");
-      button.setAttribute("aria-expanded", "true");
-      button.lastElementChild.textContent = "−";
-    }
+    card.append(badge, heading, copy);
+    fragment.appendChild(card);
   });
-});
 
-const header = document.querySelector(".site-header");
-const menuToggle = document.querySelector(".menu-toggle");
+  container.replaceChildren(fragment);
+};
 
-if (menuToggle && header) {
+const renderSteps = () => {
+  const container = document.getElementById("steps-grid");
+  if (!container) return;
+
+  const fragment = document.createDocumentFragment();
+
+  steps.forEach(({ title, text }, index) => {
+    const card = createElement("article", "step-card");
+    const badge = createElement("span", "step-index", `0${index + 1}`);
+    const heading = createElement("h3", "", title);
+    const copy = createElement("p", "", text);
+
+    card.append(badge, heading, copy);
+    fragment.appendChild(card);
+  });
+
+  container.replaceChildren(fragment);
+};
+
+const renderFaqs = () => {
+  const container = document.getElementById("faq-list");
+  if (!container) return;
+
+  const fragment = document.createDocumentFragment();
+
+  faqs.forEach(({ question, answer }, index) => {
+    const item = createElement("article", `accordion-item${index === 0 ? " open" : ""}`);
+    const button = createElement("button");
+    const questionText = createElement("span", "", question);
+    const icon = createElement("span", "", index === 0 ? MINUS : "+");
+    const panel = createElement("div", "answer");
+    const copy = createElement("p", "", answer);
+
+    button.type = "button";
+    button.setAttribute("aria-expanded", index === 0 ? "true" : "false");
+    button.setAttribute("aria-controls", `faq-answer-${index + 1}`);
+    button.id = `faq-trigger-${index + 1}`;
+    icon.setAttribute("aria-hidden", "true");
+
+    panel.id = `faq-answer-${index + 1}`;
+    panel.setAttribute("role", "region");
+    panel.setAttribute("aria-labelledby", button.id);
+    panel.hidden = index !== 0;
+
+    panel.appendChild(copy);
+    button.append(questionText, icon);
+    item.append(button, panel);
+    fragment.appendChild(item);
+  });
+
+  container.replaceChildren(fragment);
+};
+
+const bindAccordion = () => {
+  document.querySelectorAll(".accordion-item button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = button.closest(".accordion-item");
+      const isOpen = item.classList.contains("open");
+
+      document.querySelectorAll(".accordion-item").forEach((entry) => {
+        entry.classList.remove("open");
+        const trigger = entry.querySelector("button");
+        const answer = entry.querySelector(".answer");
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.lastElementChild.textContent = "+";
+        answer.hidden = true;
+      });
+
+      if (!isOpen) {
+        item.classList.add("open");
+        const answer = item.querySelector(".answer");
+        button.setAttribute("aria-expanded", "true");
+        button.lastElementChild.textContent = MINUS;
+        answer.hidden = false;
+      }
+    });
+  });
+};
+
+const bindMenu = () => {
+  const header = document.querySelector(".site-header");
+  const menuToggle = document.querySelector(".menu-toggle");
+  const siteNav = document.querySelector(".site-nav");
+
+  if (!menuToggle || !header || !siteNav) return;
+
+  const closeMenu = (returnFocus = false) => {
+    header.classList.remove("menu-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    if (returnFocus) menuToggle.focus();
+  };
+
   menuToggle.addEventListener("click", () => {
     const open = header.classList.toggle("menu-open");
     menuToggle.setAttribute("aria-expanded", String(open));
   });
 
-  document.querySelectorAll(".site-nav a").forEach((link) => {
+  siteNav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      header.classList.remove("menu-open");
-      menuToggle.setAttribute("aria-expanded", "false");
+      closeMenu();
     });
   });
-}
 
-document.querySelector(".contact-form")?.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu(true);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!header.contains(event.target)) {
+      closeMenu();
+    }
+  });
+};
+
+const bindForm = () => {
+  document.querySelector(".contact-form")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+};
+
+renderPrograms();
+renderSteps();
+renderFaqs();
+bindAccordion();
+bindMenu();
+bindForm();

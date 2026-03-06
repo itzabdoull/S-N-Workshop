@@ -3,11 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Studio North Workshop</title>
+    <title>Studio North Workshop | Creative Classes & Custom Projects</title>
     <meta
       name="description"
-      content="Studio North Workshop is a modern creative studio for hands-on classes, custom projects, and community learning."
+      content="Studio North Workshop offers creative classes, private workshops, and custom projects in a warm, modern studio setting."
     />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      name="keywords"
+      content="creative workshop, studio classes, private workshops, custom projects, hands-on learning, Studio North Workshop"
+    />
+    <meta name="author" content="Studio North Workshop" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://studionorthworkshop.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Studio North Workshop" />
+    <meta property="og:title" content="Studio North Workshop | Creative Classes & Custom Projects" />
+    <meta
+      property="og:description"
+      content="Explore creative classes, private workshops, and custom projects in a warm, modern studio setting."
+    />
+    <meta property="og:url" content="https://studionorthworkshop.com/" />
+    <meta property="og:image" content="https://studionorthworkshop.com/favicon.svg" />
+    <meta property="og:image:alt" content="Studio North Workshop brand mark" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Studio North Workshop | Creative Classes & Custom Projects" />
+    <meta
+      name="twitter:description"
+      content="Explore creative classes, private workshops, and custom projects in a warm, modern studio setting."
+    />
+    <meta name="twitter:image" content="https://studionorthworkshop.com/favicon.svg" />
+    <meta name="twitter:image:alt" content="Studio North Workshop brand mark" />
+    <meta name="theme-color" content="#2e241d" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,18 +51,26 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="#home">
           <span class="brand-mark">SN</span>
           <span class="brand-text">Studio North Workshop</span>
         </a>
-        <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </button>
-        <nav class="site-nav">
+        <nav class="site-nav" id="primary-navigation" aria-label="Primary">
           <a href="#about">About</a>
           <a href="#programs">Programs</a>
           <a href="#gallery">Gallery</a>
@@ -39,8 +81,8 @@
       </div>
     </header>
 
-    <main id="home">
-      <section class="hero section">
+    <main id="main-content">
+      <section class="hero section" id="home">
         <div class="container hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">Thoughtful making, shared locally</p>
@@ -139,11 +181,11 @@
             <p class="eyebrow">Studio moments</p>
             <h2>Warm textures, focused making, and room to explore.</h2>
           </div>
-          <div class="gallery-grid">
-            <div class="gallery-item tall"><div class="image image-gallery-one"></div></div>
-            <div class="gallery-item"><div class="image image-gallery-two"></div></div>
-            <div class="gallery-item"><div class="image image-gallery-three"></div></div>
-            <div class="gallery-item wide"><div class="image image-gallery-four"></div></div>
+          <div class="gallery-grid" aria-label="Decorative studio gallery">
+            <div class="gallery-item tall"><div class="image image-gallery-one" aria-hidden="true"></div></div>
+            <div class="gallery-item"><div class="image image-gallery-two" aria-hidden="true"></div></div>
+            <div class="gallery-item"><div class="image image-gallery-three" aria-hidden="true"></div></div>
+            <div class="gallery-item wide"><div class="image image-gallery-four" aria-hidden="true"></div></div>
           </div>
         </div>
       </section>
@@ -164,13 +206,15 @@
             <p class="eyebrow">Community feedback</p>
             <h2>Guests come for the craft and stay for the atmosphere.</h2>
           </div>
-          <div class="testimonial-card">
-            <p>
-              “The studio felt polished but never intimidating. The project was broken into easy
-              steps, and I left with something I was proud to take home.”
-            </p>
-            <span>— Workshop guest</span>
-          </div>
+          <figure class="testimonial-card">
+            <blockquote>
+              <p>
+                "The studio felt polished but never intimidating. The project was broken into easy
+                steps, and I left with something I was proud to take home."
+              </p>
+            </blockquote>
+            <figcaption>&mdash; Workshop guest</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -197,18 +241,29 @@
               Reach out to reserve a date, ask about custom sessions, or request a studio visit.
             </p>
           </div>
-          <form class="contact-form">
-            <label>
+          <form class="contact-form" novalidate>
+            <label for="contact-name">
               <span>Name</span>
-              <input type="text" placeholder="Your name" />
+              <input id="contact-name" name="name" type="text" placeholder="Your name" autocomplete="name" />
             </label>
-            <label>
+            <label for="contact-email">
               <span>Email</span>
-              <input type="email" placeholder="you@example.com" />
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+              />
             </label>
-            <label>
+            <label for="contact-message">
               <span>Message</span>
-              <textarea rows="4" placeholder="Tell us about your project or booking request"></textarea>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="4"
+                placeholder="Tell us about your project or booking request"
+              ></textarea>
             </label>
             <button type="submit" class="button button-primary">Send Inquiry</button>
           </form>
@@ -233,10 +288,13 @@
         </div>
         <div>
           <h3>Visit</h3>
-          <p>Mon–Sat by appointment</p>
+          <p>Mon&ndash;Sat by appointment</p>
           <p>hello@studionorthworkshop.com</p>
           <p>Northside Creative District</p>
         </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>&copy; 2026 Studio North Workshop. All rights reserved.</p>
       </div>
     </footer>
 
