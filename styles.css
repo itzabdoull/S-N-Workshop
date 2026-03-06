@@ -27,7 +27,9 @@ html {
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 28%),
+    linear-gradient(180deg, #fbf6ef 0%, var(--bg) 18%, #f4ece2 100%);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
@@ -67,22 +69,6 @@ textarea {
 
 .soft-section {
   background: rgba(255, 250, 244, 0.7);
-}
-
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -3rem;
-  z-index: 40;
-  padding: 0.8rem 1rem;
-  border-radius: 0.75rem;
-  background: var(--text);
-  color: #fff;
-  transition: top 0.2s ease;
-}
-
-.skip-link:focus {
-  top: 1rem;
 }
 
 .eyebrow {
@@ -136,7 +122,7 @@ main {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(14px);
-  background: rgba(247, 241, 232, 0.8);
+  background: rgba(247, 241, 232, 0.82);
   border-bottom: 1px solid rgba(46, 36, 29, 0.08);
 }
 
@@ -212,7 +198,8 @@ main {
   min-height: 3rem;
   padding: 0 1.35rem;
   font-weight: 600;
-  transition: 0.25s ease;
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .nav-cta,
@@ -224,12 +211,13 @@ main {
 .button-secondary {
   border: 1px solid var(--line);
   color: var(--text);
-  background: transparent;
+  background: rgba(255, 250, 244, 0.72);
 }
 
 .button:hover,
 .nav-cta:hover {
   transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(38, 24, 14, 0.12);
 }
 
 a:focus-visible,
@@ -280,7 +268,7 @@ textarea:focus-visible {
 
 .hero-text {
   max-width: 56ch;
-  font-size: 1.05rem;
+  font-size: 1.075rem;
 }
 
 .hero-copy {
@@ -329,6 +317,25 @@ textarea:focus-visible {
   background: var(--surface);
   border: 1px solid rgba(46, 36, 29, 0.08);
   box-shadow: var(--shadow);
+}
+
+.panel-card,
+.program-card,
+.step-card,
+.gallery-item,
+.testimonial-card,
+.cta-card {
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.panel-card:hover,
+.program-card:hover,
+.step-card:hover,
+.gallery-item:hover,
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 60px rgba(38, 24, 14, 0.15);
+  border-color: rgba(139, 79, 38, 0.16);
 }
 
 .hero-card {
@@ -395,6 +402,11 @@ textarea:focus-visible {
   box-shadow: var(--shadow);
 }
 
+.intro-grid article:not(:first-child) {
+  padding-left: 1.1rem;
+  border-left: 1px solid rgba(46, 36, 29, 0.08);
+}
+
 .two-column,
 .faq-grid,
 .testimonial-grid,
@@ -433,6 +445,11 @@ textarea:focus-visible {
   margin-bottom: 2rem;
 }
 
+.section-heading p,
+.section-copy p {
+  max-width: 60ch;
+}
+
 .section-heading h2,
 .section-copy h2,
 .testimonial-grid h2,
@@ -451,6 +468,11 @@ textarea:focus-visible {
 .step-card {
   border-radius: var(--radius-md);
   padding: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.program-card p,
+.step-card p {
+  margin-bottom: 0;
 }
 
 .program-card .meta,
@@ -477,6 +499,7 @@ textarea:focus-visible {
 .gallery-item {
   overflow: hidden;
   border-radius: var(--radius-lg);
+  min-height: 100%;
 }
 
 .gallery-item.tall {
@@ -539,6 +562,7 @@ textarea:focus-visible {
   background: transparent;
   color: var(--text);
   font-weight: 600;
+  cursor: pointer;
 }
 
 .accordion-item p {
@@ -558,6 +582,45 @@ textarea:focus-visible {
   gap: 1rem;
 }
 
+.cta-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(168, 111, 69, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(255, 250, 244, 0.96), rgba(244, 232, 219, 0.92));
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 48%);
+}
+
+.cta-card > div,
+.contact-form {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-card > div {
+  align-self: center;
+}
+
+.cta-card > div h2,
+.cta-card > div p,
+.cta-card > div .eyebrow,
+.contact-form span {
+  color: var(--text);
+}
+
+.cta-card > div p {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
 .contact-form label {
   display: grid;
   gap: 0.45rem;
@@ -572,7 +635,7 @@ textarea:focus-visible {
 .contact-form textarea {
   width: 100%;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.88);
   border-radius: 1rem;
   padding: 0.95rem 1rem;
   color: var(--text);
@@ -603,6 +666,10 @@ textarea:focus-visible {
   gap: 2rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(46, 36, 29, 0.1);
+}
+
+.footer-brand {
+  margin-bottom: 0.85rem;
 }
 
 .footer-grid h3 {
@@ -657,6 +724,11 @@ textarea:focus-visible {
 
   .intro-grid > :first-child {
     grid-column: 1 / -1;
+  }
+
+  .intro-grid article:not(:first-child) {
+    padding-left: 0;
+    border-left: 0;
   }
 
   .gallery-grid {
@@ -754,6 +826,14 @@ textarea:focus-visible {
     grid-row: auto;
     min-height: 15rem;
   }
+
+  .panel-card:hover,
+  .program-card:hover,
+  .step-card:hover,
+  .gallery-item:hover,
+  .testimonial-card:hover {
+    transform: none;
+  }
 }
 
 @media (max-width: 540px) {
@@ -790,6 +870,10 @@ textarea:focus-visible {
   .section-copy p,
   .testimonial-card p {
     font-size: 1rem;
+  }
+
+  .header-inner {
+    gap: 0.75rem;
   }
 
   .button,
@@ -829,6 +913,10 @@ textarea:focus-visible {
   .accordion-item,
   .panel-card {
     text-wrap: pretty;
+  }
+
+  .site-footer {
+    padding-bottom: 2rem;
   }
 }
 
